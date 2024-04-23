@@ -1,0 +1,43 @@
+Start
+- set default value of %Settings.SendCounter%=0
+- if %Settings.NostrAddress% is empty, call !AskForAddress
+- every day at 9 am, call CheckToSend
+- ask 'Message will be sent at 9 am. Keep this app running to get the message
+
+    You can also:
+        1. Change counter (currently %Settings.SendCounter%)
+        2. Change messaging address (%Settings.NostrAddress%)
+
+    Counter sends a message when it is between 0 and 3. 
+    ', must be 1 or 2, write to %answer%
+- if %answer% == 1, then call ChangeCounter
+- if %answer% == 2, then call ChangeAddress
+- call goal Start
+
+ChangeCounter
+- ask 'What should the counter be?', number between -3 and 3, write to %answer%
+- set %Settings.SendCounter% = %answer%
+
+ChangeAddress
+- ask 'What should the address be?', must start with 'npub', write to %answer%
+- set %Settings.NostrAddress% = %answer%
+
+CheckToSend
+- if %Settings.SendCounter% between 0 and 3 then call SendMessage, else ModifySendCounter
+
+SendMessage
+- send message to %Settings.NostrAddress%
+    content="This is a reminder"
+- [code] increment %Settings.SendCounter% by 1, write to %newCounter%
+- set setting %Settings.SendCounter% = %newCounter%
+
+ModifySendCounter
+- if %Settings.SendCounter% == 3 then
+    - set setting %Settings.SendCounter% = -3
+- if %Settings.SendCounter% < 0 then
+    - [code] increment %Settings.SendCounter% by 1, write to %newCounter%
+    - set setting %Settings.SendCounter% = %newCounter%
+
+AskForAddress
+- ask 'What is your npub address?', must start with 'npub', write to %answer%
+- set %Settings.NostrAddress% = %answer%
