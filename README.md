@@ -17,8 +17,13 @@ Navigate to the OnOff folder in your terminal/command, and run this command
 plang
 ```
 
-You will be asked to 
+You will be asked to add your messaging address (starting with `npub`).
 
+Then the app will start and it will look like this
+
+![Startup](./screenshot.jpg)
+
+## Modify app & build app
 You can modify the message and the time it is sent by changing the code of the application.
 
 To change the time, change the line `- every day at 9 am, call CheckToSend` in `Start.goal`. Here are some examples
